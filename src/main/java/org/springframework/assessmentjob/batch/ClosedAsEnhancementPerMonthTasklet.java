@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.time.DateUtils;
 
 import org.springframework.assessmentjob.configuration.ProjectAssessmentProperties;
@@ -39,6 +38,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * @author Michael Minella
  */
@@ -47,7 +48,7 @@ public class ClosedAsEnhancementPerMonthTasklet extends ReportTasklet {
 
 	private final RestOperations restTemplate;
 
-	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	public ClosedAsEnhancementPerMonthTasklet(RestOperations restTemplate,
 			Map<ReportKey, List<Long>> report,
@@ -59,7 +60,7 @@ public class ClosedAsEnhancementPerMonthTasklet extends ReportTasklet {
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 
-		String featureQuery = this.properties.getProjectRepo() + " is:issue closed:%s is:closed label:\"type: feature\"";
+		String featureQuery = this.properties.getProjectRepo() + " is:issue closed:%s is:closed label:\"type: improvement\"";
 		String enhancementQuery = this.properties.getProjectRepo() + " is:issue closed:%s is:closed label:\"type: enhancement\"";
 		long issueCount = 0;
 
